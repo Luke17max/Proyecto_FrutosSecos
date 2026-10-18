@@ -18,16 +18,16 @@ La aplicación cuenta con dos perfiles de usuario completamente operativos:
 
 ---
 
-## 📋 Cumplimiento de Rúbrica e Indicadores de Logro (Evaluación Parcial 2)
+## 🚀 Características Principales
 
-| Indicador | Criterio Evaluado | Implementación en el Proyecto |
-| :--- | :--- | :--- |
-| **IE 2.1.1** | Interfaz visual estructurada y navegación fluida (15%) | Diseño con Material 3, `Scaffold`, `TopAppBar`, barra inferior adaptable (`NavigationBar`), diseño adaptable para pantallas compactas y flujo entre las 15 pantallas. |
-| **IE 2.1.2** | Formularios completos y validaciones visuales por campo (15%) | `OutlinedTextField` con `leadingIcon`, `trailingIcon`, `isError`, y `supportingText` con mensajes dinámicos de error en Registro, Login, Producto y Perfil. |
-| **IE 2.2.1** | Lógica de validación desacoplada y gestión de estado (10%) | Validadores centralizados en `Validadores.kt`, patrón Backing Property (`MutableStateFlow` privado y `StateFlow` público) en `ViewModel`, inmutabilidad con `.copy()`. |
-| **IE 2.2.2** | Animaciones visuales funcionales (10%) | Transiciones de entrada (`AnimatedVisibility`, fade/slide) en Bienvenida, animación de éxito con rebote y escala en Confirmación de Pedido, indicadores Loader (`CircularProgressIndicator`) en botones y badges reactivos. |
-| **IE 2.3.1** | Estructura modular y persistencia local de datos (15%) | Organización en paquetes `data`, `domain`, `navigation`, `ui` y `utils`. Base de datos SQLite (`OylDbHelper.kt`) para usuarios, catálogo, carrito aislado y pedidos. |
-| **IE 2.4.1** | Acceso a al menos dos recursos nativos (15%) | **1. Cámara y Galería:** Captura de fotos para productos y avatar mediante `ActivityResultContracts.TakePicture()` y FileProvider.<br>**2. Escáner QR:** Reconocimiento de códigos de barras/QR mediante Google Play Services Code Scanner.<br>**3. Mapas y GPS:** Mapa interactivo con `osmdroid` y geolocalización GPS.<br>**4. Notificaciones:** Canal nativo y alertas con `NotificationCompat`. |
+* **Interfaz Moderna y Fluida:** Diseñada con Material Design 3 y Jetpack Compose, con navegación intuitiva adaptada para clientes y administradores.
+* **Formularios con Validación en Tiempo Real:** Validación reactiva por campo para correos, teléfonos, contraseñas y formularios de productos.
+* **Persistencia Local con SQLite:** Base de datos local para usuarios, catálogo de productos, carrito de compras y registro de pedidos.
+* **Uso de Recursos Nativos del Dispositivo:**
+  * **Cámara y Galería:** Captura de fotos para nuevos productos y foto de perfil.
+  * **Escáner de Códigos QR:** Reconocimiento de etiquetas de empaques mediante Google Code Scanner.
+  * **Mapas y Geolocalización:** Mapa interactivo con OpenStreetMap para ubicar sucursales y puntos de retiro.
+  * **Notificaciones:** Avisos locales de nuevos pedidos y stock de productos.
 
 ---
 
@@ -51,7 +51,7 @@ La aplicación cuenta con dos perfiles de usuario completamente operativos:
 
 ---
 
-## 🔑 Credenciales de Demostración para Evaluación
+## 🔑 Credenciales de Demostración
 
 * **Perfil Administrador:**
   * **Usuario / Correo:** `admin` o `admin@admin.cl`

@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app
+﻿package cl.oylfrutossecos.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,20 +11,11 @@ import cl.oylfrutossecos.app.ui.theme.OYLFrutosSecosTheme
 import cl.oylfrutossecos.app.ui.viewmodels.*
 import cl.oylfrutossecos.app.utils.NotificacionHelper
 
-// ============================================================================
-// ACTIVIDAD PRINCIPAL - OYL FRUTOS SECOS
-// ============================================================================
-// Punto de entrada de la aplicación en Android Studio.
-// Configura modo Edge-To-Edge, inicializa canales de notificación nativos
-// y suministra los ViewModels a la jerarquía de Jetpack Compose.
-// ============================================================================
-
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Configuración nativa moderna Edge-to-Edge
         enableEdgeToEdge()
 
         // Inicializar canal del sistema para notificaciones locales

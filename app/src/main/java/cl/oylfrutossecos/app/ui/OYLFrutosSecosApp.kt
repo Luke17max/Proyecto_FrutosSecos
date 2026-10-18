@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui
+﻿package cl.oylfrutossecos.app.ui
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
@@ -13,13 +13,6 @@ import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.navigation.*
 import cl.oylfrutossecos.app.ui.screens.*
 import cl.oylfrutossecos.app.ui.viewmodels.*
-
-// ============================================================================
-// COORDINADOR PRINCIPAL DE LA APLICACIÓN (UDF + NAVEGACIÓN REACTIVA)
-// ============================================================================
-// Coordina el ciclo de vida, la barra de navegación inferior adaptativa y
-// la transición fluida entre las 15 pantallas del sistema.
-// ============================================================================
 
 @Composable
 fun OYLFrutosSecosApp(

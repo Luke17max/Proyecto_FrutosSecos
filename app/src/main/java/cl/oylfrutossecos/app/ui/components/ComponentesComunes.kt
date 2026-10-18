@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.components
+﻿package cl.oylfrutossecos.app.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -26,14 +26,6 @@ import androidx.compose.ui.unit.sp
 import cl.oylfrutossecos.app.domain.model.CampoFormulario
 import cl.oylfrutossecos.app.domain.model.EstadoPedido
 import cl.oylfrutossecos.app.ui.theme.*
-
-// ============================================================================
-// COMPONENTES VISUALES REUTILIZABLES (MATERIAL 3)
-// ============================================================================
-// Cumple con el criterio IE 2.1.2 de la rúbrica:
-// "Integra formularios completos con validaciones visuales por campo,
-// retroalimentación clara e íconos adecuados."
-// ============================================================================
 
 /**
  * Campo de texto con validación reactiva, íconos y retroalimentación contextual.

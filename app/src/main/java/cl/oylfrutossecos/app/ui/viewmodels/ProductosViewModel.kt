@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.viewmodels
+﻿package cl.oylfrutossecos.app.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,10 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-// ============================================================================
-// VIEWMODEL DE CATÁLOGO Y GESTIÓN DE PRODUCTOS
-// ============================================================================
 
 data class FormularioProductoUiState(
     val id: Long = 0,
@@ -102,9 +98,7 @@ class ProductosViewModel(private val repository: OylRepository) : ViewModel() {
         }
     }
 
-    // ------------------------------------------------------------------------
     // GESTIÓN DE PRODUCTOS (ADMIN)
-    // ------------------------------------------------------------------------
 
     fun iniciarCreacionProducto() {
         val nuevoCodigo = "OYL-PRD-${(100 + (Math.random() * 900).toInt())}"

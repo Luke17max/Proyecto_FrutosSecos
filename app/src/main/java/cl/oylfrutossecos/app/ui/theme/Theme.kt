@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.theme
+﻿package cl.oylfrutossecos.app.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -11,10 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-
-// ============================================================================
-// CONFIGURACIÓN DE TEMA MATERIAL 3 - OYL FRUTOS SECOS
-// ============================================================================
 
 private val EsquemaLuz = lightColorScheme(
     primary = VerdeOlivaPrincipal,

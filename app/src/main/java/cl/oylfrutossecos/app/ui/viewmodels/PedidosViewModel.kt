@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.viewmodels
+﻿package cl.oylfrutossecos.app.ui.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -14,10 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-// ============================================================================
-// VIEWMODEL DE PEDIDOS Y TRANSACCIONES (MVVM + NOTIFICACIONES NATIVAS)
-// ============================================================================
 
 data class PedidosUiState(
     val pedidos: List<Pedido> = emptyList(),

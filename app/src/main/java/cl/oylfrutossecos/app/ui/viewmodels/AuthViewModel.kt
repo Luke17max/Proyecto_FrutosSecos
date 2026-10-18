@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.viewmodels
+﻿package cl.oylfrutossecos.app.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,10 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-// ============================================================================
-// VIEWMODEL DE AUTENTICACIÓN Y SESIÓN (MVVM + UDF)
-// ============================================================================
 
 data class LoginUiState(
     val rolSeleccionado: Rol = Rol.CLIENTE,
@@ -53,7 +49,6 @@ data class RegistroUiState(
 
 class AuthViewModel(private val repository: OylRepository) : ViewModel() {
 
-    // --- Backing Property Pattern ---
     private val _loginState = MutableStateFlow(LoginUiState())
     val loginState: StateFlow<LoginUiState> = _loginState.asStateFlow()
 
@@ -75,9 +70,7 @@ class AuthViewModel(private val repository: OylRepository) : ViewModel() {
         }
     }
 
-    // ------------------------------------------------------------------------
     // LOGIN INTENTS
-    // ------------------------------------------------------------------------
 
     fun cambiarRolLogin(rol: Rol) {
         _loginState.update { it.copy(rolSeleccionado = rol, errorGeneral = null) }
@@ -151,9 +144,7 @@ class AuthViewModel(private val repository: OylRepository) : ViewModel() {
         }
     }
 
-    // ------------------------------------------------------------------------
     // REGISTRO INTENTS
-    // ------------------------------------------------------------------------
 
     fun cambiarNombreRegistro(valor: String) = _registroState.update {
         it.copy(nombre = CampoFormulario(valor, Validadores.validarTextoRequerido(valor, "Nombre")), errorGeneral = null)

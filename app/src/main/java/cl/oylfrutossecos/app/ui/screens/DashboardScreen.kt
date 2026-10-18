@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,15 +31,6 @@ import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.PedidosViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
-
-// ============================================================================
-// PANTALLA 4: DASHBOARD / PRINCIPAL
-// ============================================================================
-// Roles: Administrador, Cliente
-// Ofrece una vista resumida según el rol:
-// - Cliente: productos destacados, promociones, accesos rápidos y pedidos recientes.
-// - Administrador: pedidos pendientes, alertas de stock bajo y accesos de gestión.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -120,9 +111,7 @@ fun DashboardScreen(
             verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             if (usuario.rol == Rol.ADMINISTRADOR) {
-                // ==========================================
                 // VISTA DASHBOARD ADMINISTRADOR
-                // ==========================================
 
                 // Banner de Alerta si hay stock bajo
                 if (productosStockBajo.isNotEmpty()) {
@@ -236,9 +225,7 @@ fun DashboardScreen(
                 }
 
             } else {
-                // ==========================================
                 // VISTA DASHBOARD CLIENTE
-                // ==========================================
 
                 // Banner Promocional Destacado
                 Card(

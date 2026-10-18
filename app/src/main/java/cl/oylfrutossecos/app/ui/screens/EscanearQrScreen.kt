@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.content.Context
 import android.widget.Toast
@@ -33,15 +33,6 @@ import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
-
-// ============================================================================
-// PANTALLA 8: ESCÁNER QR DE PRODUCTOS
-// ============================================================================
-// Roles: Administrador, Cliente
-// Recurso Nativo: Escaneo mediante Google Code Scanner (ML Kit) y cámara.
-// Lee el código identificador del producto, valida códigos no registrados,
-// muestra animación de lectura exitosa y permite ver ficha o ajustar stock.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

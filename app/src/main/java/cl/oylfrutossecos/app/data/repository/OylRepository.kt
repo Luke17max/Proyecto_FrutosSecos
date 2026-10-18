@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.data.repository
+﻿package cl.oylfrutossecos.app.data.repository
 
 import android.content.ContentValues
 import android.content.Context
@@ -8,13 +8,6 @@ import cl.oylfrutossecos.app.domain.model.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-// ============================================================================
-// REPOSITORIO DE DATOS - OYL FRUTOS SECOS
-// ============================================================================
-// Provee una capa de abstracción entre la base de datos SQLite y la lógica
-// de presentación (ViewModels), aplicando el patrón Repository.
-// ============================================================================
 
 class OylRepository private constructor(context: Context) {
 
@@ -31,9 +24,7 @@ class OylRepository private constructor(context: Context) {
         }
     }
 
-    // ------------------------------------------------------------------------
     // 1. AUTENTICACIÓN Y SESIONES
-    // ------------------------------------------------------------------------
 
     fun iniciarSesion(aliasOCorreo: String, contrasena: String): Usuario? {
         val db = dbHelper.readableDatabase
@@ -146,9 +137,7 @@ class OylRepository private constructor(context: Context) {
         return db.update("usuarios", cv, "id = ?", arrayOf(usuario.id.toString())) > 0
     }
 
-    // ------------------------------------------------------------------------
     // 2. CATÁLOGO DE PRODUCTOS
-    // ------------------------------------------------------------------------
 
     fun obtenerProductos(categoria: Categoria = Categoria.TODOS, busqueda: String = ""): List<Producto> {
         val db = dbHelper.readableDatabase
@@ -233,9 +222,7 @@ class OylRepository private constructor(context: Context) {
         return filas > 0
     }
 
-    // ------------------------------------------------------------------------
     // 3. GESTIÓN DEL CARRITO (Aislado por cliente)
-    // ------------------------------------------------------------------------
 
     fun obtenerCarrito(usuarioId: Long): List<ItemCarrito> {
         val db = dbHelper.readableDatabase
@@ -313,9 +300,7 @@ class OylRepository private constructor(context: Context) {
         db.delete("carrito", "usuario_id = ?", arrayOf(usuarioId.toString()))
     }
 
-    // ------------------------------------------------------------------------
     // 4. TRANSACCIONES Y PEDIDOS (Control estricto de Stock)
-    // ------------------------------------------------------------------------
 
     fun procesarPedido(
         usuarioId: Long,
@@ -534,9 +519,7 @@ class OylRepository private constructor(context: Context) {
         return filas > 0
     }
 
-    // ------------------------------------------------------------------------
     // 5. NOTIFICACIONES
-    // ------------------------------------------------------------------------
 
     fun obtenerNotificaciones(usuarioId: Long, esAdmin: Boolean): List<Notificacion> {
         val db = dbHelper.readableDatabase
@@ -571,9 +554,7 @@ class OylRepository private constructor(context: Context) {
         db.update("notificaciones", cv, "id = ?", arrayOf(id.toString()))
     }
 
-    // ------------------------------------------------------------------------
     // 6. PUNTOS DE RETIRO Y TIENDA (Para mapa OSMDroid)
-    // ------------------------------------------------------------------------
 
     fun obtenerPuntosDeRetiro(): List<PuntoRetiro> {
         return listOf(
@@ -620,9 +601,7 @@ class OylRepository private constructor(context: Context) {
         )
     }
 
-    // ------------------------------------------------------------------------
     // MAPPERS PRIVADOS DE CURSOR
-    // ------------------------------------------------------------------------
 
     private fun cursorAUsuario(c: Cursor): Usuario {
         return Usuario(

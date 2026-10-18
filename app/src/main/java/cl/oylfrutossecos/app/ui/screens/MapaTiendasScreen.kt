@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.Manifest
 import android.content.Context
@@ -34,15 +34,6 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-
-// ============================================================================
-// PANTALLA 5: MAPA DE TIENDAS Y PUNTOS DE RETIRO
-// ============================================================================
-// Rol: Cliente
-// Recurso Nativo: Mapas OpenStreetMap (osmdroid) y Localización GPS.
-// Muestra la ubicación de la tienda central y los puntos de retiro habilitados
-// con horarios, dirección y geolocalización en tiempo real.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

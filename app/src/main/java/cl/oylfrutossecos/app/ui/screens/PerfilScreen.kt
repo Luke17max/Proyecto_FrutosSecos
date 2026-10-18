@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.Manifest
 import android.content.Context
@@ -33,14 +33,6 @@ import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.AuthViewModel
 import java.io.File
-
-// ============================================================================
-// PANTALLA 15: PERFIL Y CONFIGURACIÓN
-// ============================================================================
-// Roles: Administrador, Cliente
-// Permite consultar y editar datos de perfil, cambiar fotografía con la
-// cámara nativa, revisar permisos del sistema y cerrar sesión.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

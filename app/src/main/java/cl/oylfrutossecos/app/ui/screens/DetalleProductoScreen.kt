@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -24,14 +24,6 @@ import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.ui.components.AlertaStockBajoBadge
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
-
-// ============================================================================
-// PANTALLA 7: DETALLE DEL PRODUCTO
-// ============================================================================
-// Roles: Administrador, Cliente
-// Muestra fotografía ampliada, nombre, categoría, descripción, precio y
-// existencia disponible con selector de cantidad y añadir al carrito.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

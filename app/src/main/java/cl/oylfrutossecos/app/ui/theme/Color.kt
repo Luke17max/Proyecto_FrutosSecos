@@ -1,15 +1,6 @@
-package cl.oylfrutossecos.app.ui.theme
+﻿package cl.oylfrutossecos.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
-
-// ============================================================================
-// PALETA DE COLORES - OYL FRUTOS SECOS
-// ============================================================================
-// Identidad visual orientada al rubro orgánico y de frutos secos:
-// - Tonos tierra cálidos (avellana, castaña, madera)
-// - Verde naturaleza (hoja, oliva, frescura)
-// - Acentos dorados y miel
-// ============================================================================
 
 val VerdeOlivaPrincipal = Color(0xFF2E6B34)
 val VerdeOlivaOscuro = Color(0xFF1E4822)

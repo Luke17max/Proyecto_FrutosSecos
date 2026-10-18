@@ -1,15 +1,8 @@
-package cl.oylfrutossecos.app.navigation
+﻿package cl.oylfrutossecos.app.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
-
-// ============================================================================
-// SISTEMA DE DESTINOS Y RUTAS DE NAVEGACIÓN - OYL FRUTOS SECOS
-// ============================================================================
-// Organiza las 15 pantallas especificadas en el archivo:
-// "059 SEC004D Pantallas Caso OYL Frutos Secos.pdf"
-// ============================================================================
 
 enum class Pantalla(val ruta: String, val titulo: String) {
     BIENVENIDA("bienvenida", "Bienvenido a OYL"),

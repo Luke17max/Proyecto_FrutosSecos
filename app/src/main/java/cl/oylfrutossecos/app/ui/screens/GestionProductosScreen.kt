@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.content.Context
 import android.net.Uri
@@ -35,14 +35,6 @@ import cl.oylfrutossecos.app.ui.components.CampoTextoFormulario
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
 import java.io.File
-
-// ============================================================================
-// PANTALLA 11: GESTIÓN DE PRODUCTOS (ADMINISTRADOR)
-// ============================================================================
-// Rol: Administrador
-// Permite crear, editar, activar o desactivar productos con formularios validados.
-// Integra el recurso nativo de CÁMARA y GALERÍA para fotografiar el producto.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

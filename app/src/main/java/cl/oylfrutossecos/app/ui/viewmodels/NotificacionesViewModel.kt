@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.viewmodels
+﻿package cl.oylfrutossecos.app.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,10 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-// ============================================================================
-// VIEWMODEL DE CENTRO DE NOTIFICACIONES
-// ============================================================================
 
 data class NotificacionesUiState(
     val notificaciones: List<Notificacion> = emptyList(),

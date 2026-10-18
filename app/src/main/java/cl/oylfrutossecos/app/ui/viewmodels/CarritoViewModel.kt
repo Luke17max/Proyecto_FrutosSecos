@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.viewmodels
+﻿package cl.oylfrutossecos.app.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,10 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-// ============================================================================
-// VIEWMODEL DE CARRITO DE COMPRAS (MVVM + STATEFLOW)
-// ============================================================================
 
 data class CarritoUiState(
     val items: List<ItemCarrito> = emptyList(),

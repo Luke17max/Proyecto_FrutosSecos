@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -27,14 +27,6 @@ import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
-
-// ============================================================================
-// PANTALLA 6: CATÁLOGO DE PRODUCTOS
-// ============================================================================
-// Roles: Administrador, Cliente
-// Presenta frutos secos, semillas y deshidratados organizados por categoría.
-// Incluye buscador en vivo, chips de filtro y acciones según rol.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

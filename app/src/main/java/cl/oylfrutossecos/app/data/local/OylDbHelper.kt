@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.data.local
+﻿package cl.oylfrutossecos.app.data.local
 
 import android.content.ContentValues
 import android.content.Context
@@ -6,16 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import cl.oylfrutossecos.app.domain.model.*
-
-// ============================================================================
-// BASE DE DATOS LOCAL SQLITE - OYL FRUTOS SECOS
-// ============================================================================
-// Cumple con los requerimientos del encargo y el archivo de pantallas:
-// - Persistencia local confiable en SQLite
-// - Aislamiento de sesiones, perfiles y carritos por usuario
-// - Catálogo en caché con datos sintéticos autorizados
-// - Control transaccional de pedidos y variación de stock
-// ============================================================================
 
 class OylDbHelper(context: Context) : SQLiteOpenHelper(
     context.applicationContext,
@@ -166,7 +156,6 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
     }
 
     private fun insertarDatosIniciales(db: SQLiteDatabase) {
-        // 1. Usuario Administrador Preconfigurado (Datos exigidos por el Caso OYL)
         val adminValues = ContentValues().apply {
             put("nombre", "Administrador")
             put("alias", "admin")

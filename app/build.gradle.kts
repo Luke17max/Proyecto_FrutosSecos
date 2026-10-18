@@ -55,10 +55,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
 
-    // Recurso Nativo: Escáner de Códigos QR (ML Kit / Google Play Services)
+    // Escáner de Códigos QR
     implementation(libs.play.services.code.scanner)
 
-    // Recurso Nativo: Mapas interactivos OpenStreetMap (osmdroid)
+    // Mapas OpenStreetMap
     implementation(libs.osmdroid.android)
 
     debugImplementation(libs.androidx.ui.tooling)

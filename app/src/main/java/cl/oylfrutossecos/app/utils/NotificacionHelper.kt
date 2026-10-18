@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.utils
+﻿package cl.oylfrutossecos.app.utils
 
 import android.Manifest
 import android.app.NotificationChannel
@@ -9,13 +9,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-
-// ============================================================================
-// INTEGRACIÓN NATIVA: SISTEMA DE NOTIFICACIONES ANDROID
-// ============================================================================
-// Gestiona canales de notificación del sistema operativo Android y el envío
-// seguro respetando los permisos de Android 13+ (POST_NOTIFICATIONS).
-// ============================================================================
 
 object NotificacionHelper {
 

@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -27,14 +27,6 @@ import cl.oylfrutossecos.app.ui.components.BotonConCarga
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.PedidosViewModel
-
-// ============================================================================
-// PANTALLA 9: CARRITO DE COMPRAS
-// ============================================================================
-// Rol: Cliente
-// Muestra productos seleccionados, subtotales, cantidades y modalidades
-// de despacho o retiro. Conserva el carrito en SQLite aislado por cliente.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

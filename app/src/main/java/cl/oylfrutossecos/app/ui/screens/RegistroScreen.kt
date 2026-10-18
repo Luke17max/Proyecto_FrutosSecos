@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,14 +18,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cl.oylfrutossecos.app.ui.components.BotonConCarga
 import cl.oylfrutossecos.app.ui.components.CampoTextoFormulario
 import cl.oylfrutossecos.app.ui.viewmodels.AuthViewModel
-
-// ============================================================================
-// PANTALLA 2: REGISTRO DE CLIENTE
-// ============================================================================
-// Rol: Cliente
-// Formulario para registrar al cliente con nombre, alias, correo, teléfono,
-// dirección y contraseña. Valida campos obligatorios y persiste en SQLite.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

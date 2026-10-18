@@ -1,13 +1,4 @@
-package cl.oylfrutossecos.app.utils
-
-// ============================================================================
-// VALIDADORES DESACOPLADOS (Lógica pura de negocio)
-// ============================================================================
-// Cumple con el criterio IE 2.2.1 de la rúbrica:
-// "Gestiona la lógica de validación centralizada en componentes lógicos,
-// y la interfaz responde correctamente a cambios de estado, reflejando una
-// arquitectura desacoplada y eficiente."
-// ============================================================================
+﻿package cl.oylfrutossecos.app.utils
 
 object Validadores {
 

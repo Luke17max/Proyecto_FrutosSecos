@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.Manifest
 import android.os.Build
@@ -30,14 +30,6 @@ import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.NotificacionesViewModel
-
-// ============================================================================
-// PANTALLA 14: CENTRO DE NOTIFICACIONES
-// ============================================================================
-// Roles: Administrador, Cliente
-// Centraliza los avisos sobre nuevos pedidos, productos con stock bajo y
-// promociones. Contempla permisos nativos POST_NOTIFICATIONS (Android 13+).
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

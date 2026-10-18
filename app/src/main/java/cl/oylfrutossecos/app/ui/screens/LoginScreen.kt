@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,14 +23,6 @@ import cl.oylfrutossecos.app.ui.components.BotonConCarga
 import cl.oylfrutossecos.app.ui.components.CampoTextoFormulario
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.AuthViewModel
-
-// ============================================================================
-// PANTALLA 3: INICIO DE SESIÓN
-// ============================================================================
-// Roles: Administrador, Cliente
-// Permite seleccionar el tipo de usuario e ingresar mediante alias y contraseña.
-// Incluye selector de rol y credenciales de prueba preconfiguradas.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

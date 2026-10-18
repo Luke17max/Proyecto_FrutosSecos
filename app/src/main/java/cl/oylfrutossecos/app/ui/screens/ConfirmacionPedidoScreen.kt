@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -24,21 +24,12 @@ import cl.oylfrutossecos.app.domain.model.Pedido
 import cl.oylfrutossecos.app.ui.components.BadgeEstadoPedido
 import cl.oylfrutossecos.app.ui.theme.*
 
-// ============================================================================
-// PANTALLA 10: CONFIRMACIÓN DEL PEDIDO
-// ============================================================================
-// Rol: Cliente
-// Muestra animación visual de éxito, número de solicitud transaccional,
-// resumen de artículos, modalidad y acceso directo al historial de pedidos.
-// ============================================================================
-
 @Composable
 fun ConfirmacionPedidoScreen(
     pedido: Pedido,
     alVerMisPedidos: () -> Unit,
     alSeguirComprando: () -> Unit
 ) {
-    // Animación de rebote y escala del ícono de éxito (Cumple con IE 2.2.2 Animaciones)
     val transicion = rememberInfiniteTransition(label = "pulse")
     val escalaIcono by animateFloatAsState(
         targetValue = 1f,

@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -23,14 +23,6 @@ import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.ui.components.BadgeEstadoPedido
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.PedidosViewModel
-
-// ============================================================================
-// PANTALLA 13: HISTORIAL Y GESTIÓN DE PEDIDOS
-// ============================================================================
-// Roles: Administrador, Cliente
-// Cliente: consulta sus pedidos y estados de validación / entrega.
-// Administrador: consulta todas las solicitudes y actualiza su estado.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

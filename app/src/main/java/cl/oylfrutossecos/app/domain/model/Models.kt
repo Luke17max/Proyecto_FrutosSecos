@@ -1,11 +1,4 @@
-package cl.oylfrutossecos.app.domain.model
-
-// ============================================================================
-// MODELOS DE DOMINIO - OYL FRUTOS SECOS
-// ============================================================================
-// Define las entidades de negocio inmutables y los estados atómicos
-// según las especificaciones del Caso OYL y la arquitectura MVVM.
-// ============================================================================
+﻿package cl.oylfrutossecos.app.domain.model
 
 /**
  * Roles de usuario admitidos por la plataforma.
@@ -133,10 +126,6 @@ data class PuntoRetiro(
     val longitud: Double,
     val esTiendaPrincipal: Boolean = false
 )
-
-// ============================================================================
-// MODELOS ATÓMICOS PARA GESTIÓN DE FORMULARIOS (MVVM + STATEFLOW)
-// ============================================================================
 
 /**
  * Campo individual de formulario con texto y mensaje de fallo desacoplado.

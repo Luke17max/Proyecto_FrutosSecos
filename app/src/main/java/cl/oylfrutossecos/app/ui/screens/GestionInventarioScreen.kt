@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -23,14 +23,6 @@ import cl.oylfrutossecos.app.domain.model.Producto
 import cl.oylfrutossecos.app.ui.components.AlertaStockBajoBadge
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.InventarioViewModel
-
-// ============================================================================
-// PANTALLA 12: GESTIÓN DE INVENTARIO (ADMINISTRADOR)
-// ============================================================================
-// Rol: Administrador
-// Permite consultar existencias, identificar productos con stock bajo y
-// registrar movimientos de entrada o salida de inventario en tiempo real.
-// ============================================================================
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

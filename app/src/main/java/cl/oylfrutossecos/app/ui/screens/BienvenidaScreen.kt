@@ -1,4 +1,4 @@
-package cl.oylfrutossecos.app.ui.screens
+﻿package cl.oylfrutossecos.app.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -21,14 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cl.oylfrutossecos.app.ui.theme.*
-
-// ============================================================================
-// PANTALLA 1: BIENVENIDA / INICIO
-// ============================================================================
-// Roles: Administrador, Cliente
-// Presenta la marca OYL Frutos Secos con animación de entrada y accesos
-// directos a comenzar, consultar catálogo o ubicar la tienda física.
-// ============================================================================
 
 @Composable
 fun BienvenidaScreen(
