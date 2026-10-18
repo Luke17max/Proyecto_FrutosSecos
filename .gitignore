@@ -1,0 +1,21 @@
+# Ignorar dependencias y caché generadas por Gradle
+.gradle/
+build/
+app/build/
+*.hprof
+
+# Ignorar archivos locales de configuración del SDK de Android
+local.properties
+
+# Ignorar configuraciones específicas del IDE (Android Studio / IntelliJ)
+.idea/
+*.iml
+.kotlin/
+
+# Ignorar binarios y ejecutables generados
+*.apk
+*.aab
+
+# Ignorar archivos temporales del sistema
+.DS_Store
+Thumbs.db
