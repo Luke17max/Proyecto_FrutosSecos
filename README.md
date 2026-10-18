@@ -1,8 +1,7 @@
 # OYL Frutos Secos - Aplicación Móvil Android
 
 **Asignatura:** DSY1105 - Desarrollo de Aplicaciones Móviles  
-**Intregrantes:** Pedro García, Sebastián Castillo, Cristián Carvajal, Lucas Guerra 
- 
+**Integrantes:** Pedro García, Sebastián Castillo, Cristián Carvajal, Lucas Guerra 
 **Arquitectura:** MVVM (Model - View - ViewModel) + Flujo Unidireccional de Datos (UDF)  
 **Tecnologías:** Kotlin, Jetpack Compose, Material Design 3, SQLite (Persistencia Local), OpenStreetMap (osmdroid), ML Kit Code Scanner, Notificaciones Nativas Android.
 
