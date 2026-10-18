@@ -1,8 +1,8 @@
 # OYL Frutos Secos - Aplicación Móvil Android
 
 **Asignatura:** DSY1105 - Desarrollo de Aplicaciones Móviles  
-**Evaluación:** Evaluación Parcial 2 (Encargo)  
-**Institución:** Duoc UC - Escuela de Informática y Telecomunicaciones  
+**Intregrantes:** Pedro García, Sebastián Castillo, Cristián Carvajal, Lucas Guerra 
+ 
 **Arquitectura:** MVVM (Model - View - ViewModel) + Flujo Unidireccional de Datos (UDF)  
 **Tecnologías:** Kotlin, Jetpack Compose, Material Design 3, SQLite (Persistencia Local), OpenStreetMap (osmdroid), ML Kit Code Scanner, Notificaciones Nativas Android.
 
