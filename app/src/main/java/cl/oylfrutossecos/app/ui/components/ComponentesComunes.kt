@@ -1,8 +1,14 @@
 ﻿package cl.oylfrutossecos.app.ui.components
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,15 +23,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cl.oylfrutossecos.app.domain.model.CampoFormulario
 import cl.oylfrutossecos.app.domain.model.EstadoPedido
 import cl.oylfrutossecos.app.ui.theme.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.InputStream
 
 /**
  * Campo de texto con validación reactiva, íconos y retroalimentación contextual.
@@ -212,6 +226,117 @@ fun AlertaStockBajoBadge(stock: Int) {
                 color = colorAnimado,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+/**
+ * Componente reactivo para renderizar imágenes de productos (desde ruta interna o URI)
+ * con fallback a ícono temático y decodificación asíncrona segura.
+ */
+@Composable
+fun ImagenProducto(
+    imagenUri: String?,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+    contentScale: ContentScale = ContentScale.Crop,
+    iconoPorDefecto: ImageVector = Icons.Default.Eco,
+    colorIconoPorDefecto: Color = VerdeOlivaPrincipal,
+    tamanoIconoPorDefecto: Dp = 32.dp
+) {
+    val context = LocalContext.current
+    var bitmapState by remember(imagenUri) { mutableStateOf<Bitmap?>(null) }
+
+    LaunchedEffect(imagenUri) {
+        if (!imagenUri.isNullOrBlank()) {
+            withContext(Dispatchers.IO) {
+                try {
+                    val uri = Uri.parse(imagenUri)
+                    var inputStream: InputStream? = null
+                    var rutaArchivo: String? = null
+
+                    if (uri.scheme == "content") {
+                        inputStream = context.contentResolver.openInputStream(uri)
+                    } else {
+                        val path = uri.path ?: imagenUri
+                        val archivo = File(path)
+                        if (archivo.exists()) {
+                            rutaArchivo = archivo.absolutePath
+                            inputStream = archivo.inputStream()
+                        } else {
+                            inputStream = context.contentResolver.openInputStream(uri)
+                        }
+                    }
+
+                    val bitmapDecodificado = inputStream?.use { stream ->
+                        BitmapFactory.decodeStream(stream)
+                    }
+
+                    // Corrección de rotación EXIF si la foto proviene de la cámara física
+                    val bitmapFinal = if (bitmapDecodificado != null && rutaArchivo != null) {
+                        try {
+                            val exif = ExifInterface(rutaArchivo)
+                            val orientacion = exif.getAttributeInt(
+                                ExifInterface.TAG_ORIENTATION,
+                                ExifInterface.ORIENTATION_NORMAL
+                            )
+                            val grados = when (orientacion) {
+                                ExifInterface.ORIENTATION_ROTATE_90 -> 90f
+                                ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+                                ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+                                else -> 0f
+                            }
+                            if (grados != 0f) {
+                                val matriz = Matrix().apply { postRotate(grados) }
+                                Bitmap.createBitmap(
+                                    bitmapDecodificado,
+                                    0,
+                                    0,
+                                    bitmapDecodificado.width,
+                                    bitmapDecodificado.height,
+                                    matriz,
+                                    true
+                                )
+                            } else {
+                                bitmapDecodificado
+                            }
+                        } catch (_: Exception) {
+                            bitmapDecodificado
+                        }
+                    } else {
+                        bitmapDecodificado
+                    }
+
+                    bitmapState = bitmapFinal
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    bitmapState = null
+                }
+            }
+        } else {
+            bitmapState = null
+        }
+    }
+
+    val bmp = bitmapState
+    if (bmp != null) {
+        Image(
+            bitmap = bmp.asImageBitmap(),
+            contentDescription = contentDescription,
+            modifier = modifier,
+            contentScale = contentScale
+        )
+    } else {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = iconoPorDefecto,
+                contentDescription = contentDescription,
+                tint = colorIconoPorDefecto,
+                modifier = Modifier.size(tamanoIconoPorDefecto)
             )
         }
     }
