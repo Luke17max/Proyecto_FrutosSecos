@@ -33,18 +33,18 @@ data class DestinoBarraInferior(
 
 val DestinosBarraCliente = listOf(
     DestinoBarraInferior(Pantalla.DASHBOARD, "Inicio", Icons.Default.Home),
-    DestinoBarraInferior(Pantalla.CATALOGO, "Catálogo", Icons.Default.Storefront),
+    DestinoBarraInferior(Pantalla.CATALOGO, "Tienda", Icons.Default.Storefront),
     DestinoBarraInferior(Pantalla.MAPA_TIENDAS, "Mapa", Icons.Default.Map),
-    DestinoBarraInferior(Pantalla.ESCANER_QR, "Escanear", Icons.Default.QrCodeScanner),
-    DestinoBarraInferior(Pantalla.HISTORIAL_PEDIDOS, "Pedidos", Icons.Default.ReceiptLong),
+    DestinoBarraInferior(Pantalla.ESCANER_QR, "Scan", Icons.Default.QrCodeScanner),
+    DestinoBarraInferior(Pantalla.HISTORIAL_PEDIDOS, "Pedido", Icons.Default.ReceiptLong),
     DestinoBarraInferior(Pantalla.PERFIL, "Perfil", Icons.Default.Person)
 )
 
 val DestinosBarraAdmin = listOf(
     DestinoBarraInferior(Pantalla.DASHBOARD, "Inicio", Icons.Default.Dashboard),
-    DestinoBarraInferior(Pantalla.GESTION_PRODUCTOS, "Productos", Icons.Default.Inventory),
-    DestinoBarraInferior(Pantalla.GESTION_INVENTARIO, "Inventario", Icons.Default.FactCheck),
-    DestinoBarraInferior(Pantalla.HISTORIAL_PEDIDOS, "Pedidos", Icons.Default.ReceiptLong),
+    DestinoBarraInferior(Pantalla.GESTION_PRODUCTOS, "Prods", Icons.Default.Inventory),
+    DestinoBarraInferior(Pantalla.GESTION_INVENTARIO, "Stock", Icons.Default.FactCheck),
+    DestinoBarraInferior(Pantalla.HISTORIAL_PEDIDOS, "Pedido", Icons.Default.ReceiptLong),
     DestinoBarraInferior(Pantalla.NOTIFICACIONES, "Avisos", Icons.Default.Notifications),
     DestinoBarraInferior(Pantalla.PERFIL, "Perfil", Icons.Default.Person)
 )
