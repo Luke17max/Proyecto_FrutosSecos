@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cl.oylfrutossecos.app.domain.model.Categoria
 import cl.oylfrutossecos.app.domain.model.Producto
 import cl.oylfrutossecos.app.domain.model.Rol
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
@@ -178,16 +180,18 @@ private fun TarjetaCatalogo(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
+                    .height(110.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .background(SuperficieVariante),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Eco,
-                    contentDescription = null,
-                    tint = VerdeOlivaPrincipal,
-                    modifier = Modifier.size(46.dp)
+                ImagenProducto(
+                    imagenUri = producto.imagenUri,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    iconoPorDefecto = Icons.Default.Eco,
+                    colorIconoPorDefecto = VerdeOlivaPrincipal,
+                    tamanoIconoPorDefecto = 46.dp
                 )
 
                 // Badge de Formato
