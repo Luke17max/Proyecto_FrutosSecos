@@ -146,7 +146,7 @@ class ProductosViewModel(private val repository: OylRepository) : ViewModel() {
         it.copy(descripcion = CampoFormulario(valor, Validadores.validarTextoRequerido(valor, "Descripción", 5)), mensajeError = null)
     }
 
-    fun asignarImagenProducto(uri: String) = _formularioProducto.update {
+    fun asignarImagenProducto(uri: String?) = _formularioProducto.update {
         it.copy(imagenUri = uri)
     }
 
