@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +34,7 @@ import cl.oylfrutossecos.app.domain.model.Categoria
 import cl.oylfrutossecos.app.domain.model.Producto
 import cl.oylfrutossecos.app.ui.components.BotonConCarga
 import cl.oylfrutossecos.app.ui.components.CampoTextoFormulario
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
 import java.io.File
@@ -48,14 +51,23 @@ fun GestionProductosScreen(
 
     var mostrandoFormulario by remember { mutableStateOf(false) }
     var uriFotoTemporal by remember { mutableStateOf<Uri?>(null) }
+    var archivoFotoTemporal by remember { mutableStateOf<File?>(null) }
 
     // Lanzador Nativo 1: Tomar foto con la Cámara del teléfono
     val lanzadorCamara = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { exito ->
-        if (exito && uriFotoTemporal != null) {
-            productosViewModel.asignarImagenProducto(uriFotoTemporal.toString())
-            Toast.makeText(context, "¡Fotografía capturada con éxito!", Toast.LENGTH_SHORT).show()
+        if (exito && archivoFotoTemporal != null && archivoFotoTemporal!!.exists() && archivoFotoTemporal!!.length() > 0) {
+            try {
+                val dirProductos = File(context.filesDir, "productos").apply { if (!exists()) mkdirs() }
+                val archivoDestino = File(dirProductos, "prod_${System.currentTimeMillis()}.jpg")
+                archivoFotoTemporal!!.copyTo(archivoDestino, overwrite = true)
+                productosViewModel.asignarImagenProducto(archivoDestino.absolutePath)
+                Toast.makeText(context, "¡Fotografía capturada con éxito!", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                productosViewModel.asignarImagenProducto(uriFotoTemporal?.toString())
+                Toast.makeText(context, "¡Fotografía capturada con éxito!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -64,14 +76,28 @@ fun GestionProductosScreen(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            productosViewModel.asignarImagenProducto(uri.toString())
-            Toast.makeText(context, "Imagen seleccionada de la galería", Toast.LENGTH_SHORT).show()
+            try {
+                val dirProductos = File(context.filesDir, "productos").apply { if (!exists()) mkdirs() }
+                val archivoDestino = File(dirProductos, "prod_${System.currentTimeMillis()}.jpg")
+                context.contentResolver.openInputStream(uri)?.use { input ->
+                    archivoDestino.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                productosViewModel.asignarImagenProducto(archivoDestino.absolutePath)
+                Toast.makeText(context, "Imagen seleccionada de la galería", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                productosViewModel.asignarImagenProducto(uri.toString())
+                Toast.makeText(context, "Imagen seleccionada de la galería", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     fun abrirCamara() {
         try {
-            val archivo = File(context.cacheDir, "producto_${System.currentTimeMillis()}.jpg")
+            val dirTemp = File(context.cacheDir, "camara").apply { if (!exists()) mkdirs() }
+            val archivo = File(dirTemp, "foto_${System.currentTimeMillis()}.jpg")
+            archivoFotoTemporal = archivo
             val uri = FileProvider.getUriForFile(context, "cl.oylfrutossecos.app.fileprovider", archivo)
             uriFotoTemporal = uri
             lanzadorCamara.launch(uri)
@@ -139,16 +165,50 @@ fun GestionProductosScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(120.dp)
+                                .height(160.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(SuperficieTarjeta),
                             contentAlignment = Alignment.Center
                         ) {
-                            if (estadoForm.imagenUri != null) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(Icons.Default.CheckCircle, contentDescription = null, tint = VerdeExito)
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text("Fotografía asociada a la ficha", fontWeight = FontWeight.Bold, color = VerdeExito)
+                            if (!estadoForm.imagenUri.isNullOrBlank()) {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    ImagenProducto(
+                                        imagenUri = estadoForm.imagenUri,
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                    // Indicador visual de foto asociada
+                                    Surface(
+                                        color = Color.Black.copy(alpha = 0.65f),
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                            .align(Alignment.BottomEnd)
+                                            .padding(8.dp)
+                                    ) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                        ) {
+                                            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = VerdeExito, modifier = Modifier.size(16.dp))
+                                            Spacer(modifier = Modifier.width(6.dp))
+                                            Text("Fotografía asociada a la ficha", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                        }
+                                    }
+                                    // Botón para remover fotografía
+                                    IconButton(
+                                        onClick = { productosViewModel.asignarImagenProducto(null) },
+                                        modifier = Modifier
+                                            .align(Alignment.TopEnd)
+                                            .padding(4.dp)
+                                    ) {
+                                        Surface(
+                                            shape = CircleShape,
+                                            color = Color.Black.copy(alpha = 0.6f),
+                                            modifier = Modifier.size(30.dp)
+                                        ) {
+                                            Icon(Icons.Default.Close, contentDescription = "Quitar foto", tint = Color.White, modifier = Modifier.padding(6.dp))
+                                        }
+                                    }
                                 }
                             } else {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -290,12 +350,18 @@ fun GestionProductosScreen(
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(50.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .size(54.dp)
+                                    .clip(RoundedCornerShape(10.dp))
                                     .background(VerdeOlivaClaro),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Icon(Icons.Default.Eco, contentDescription = null, tint = VerdeOlivaPrincipal)
+                                ImagenProducto(
+                                    imagenUri = prod.imagenUri,
+                                    modifier = Modifier.fillMaxSize(),
+                                    iconoPorDefecto = Icons.Default.Eco,
+                                    colorIconoPorDefecto = VerdeOlivaPrincipal,
+                                    tamanoIconoPorDefecto = 28.dp
+                                )
                             }
                             Spacer(modifier = Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
