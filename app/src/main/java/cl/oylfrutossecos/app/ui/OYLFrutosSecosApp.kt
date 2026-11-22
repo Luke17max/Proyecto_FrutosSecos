@@ -60,7 +60,14 @@ fun OYLFrutosSecosApp(
                             selected = seleccionada,
                             onClick = { pantallaActual = destino.pantalla },
                             icon = { Icon(destino.icono, contentDescription = destino.etiqueta) },
-                            label = { Text(destino.etiqueta) }
+                            label = {
+                                Text(
+                                    text = destino.etiqueta,
+                                    maxLines = 1,
+                                    softWrap = false,
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
                         )
                     }
                 }
