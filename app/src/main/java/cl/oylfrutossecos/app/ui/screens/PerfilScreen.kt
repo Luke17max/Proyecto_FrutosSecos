@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.domain.model.Usuario
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.AuthViewModel
 import java.io.File
@@ -51,6 +53,7 @@ fun PerfilScreen(
 
     var dialogoCerrarSesion by remember { mutableStateOf(false) }
     var uriFotoTemporal by remember { mutableStateOf<Uri?>(null) }
+    var archivoFotoTemporal by remember { mutableStateOf<File?>(null) }
 
     // Estado en vivo de permisos nativos
     var permisoCamara by remember {
@@ -71,9 +74,30 @@ fun PerfilScreen(
     val lanzadorCamara = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { exito ->
-        if (exito && uriFotoTemporal != null) {
-            authViewModel.actualizarAvatar(uriFotoTemporal.toString())
-            Toast.makeText(context, "Foto de perfil actualizada", Toast.LENGTH_SHORT).show()
+        if (exito && archivoFotoTemporal != null && archivoFotoTemporal!!.exists() && archivoFotoTemporal!!.length() > 0) {
+            try {
+                val dirAvatares = File(context.filesDir, "avatares").apply { if (!exists()) mkdirs() }
+                val archivoDestino = File(dirAvatares, "avatar_${System.currentTimeMillis()}.jpg")
+                archivoFotoTemporal!!.copyTo(archivoDestino, overwrite = true)
+                authViewModel.actualizarAvatar(archivoDestino.absolutePath)
+                Toast.makeText(context, "Foto de perfil actualizada", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                authViewModel.actualizarAvatar(uriFotoTemporal?.toString() ?: "")
+                Toast.makeText(context, "Foto de perfil actualizada", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun tomarFotoPerfil() {
+        try {
+            val dirTemp = File(context.cacheDir, "camara").apply { if (!exists()) mkdirs() }
+            val archivo = File(dirTemp, "avatar_${System.currentTimeMillis()}.jpg")
+            archivoFotoTemporal = archivo
+            val uri = FileProvider.getUriForFile(context, "cl.oylfrutossecos.app.fileprovider", archivo)
+            uriFotoTemporal = uri
+            lanzadorCamara.launch(uri)
+        } catch (e: Exception) {
+            Toast.makeText(context, "No se pudo iniciar la cámara: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -82,10 +106,7 @@ fun PerfilScreen(
     ) { concedido ->
         permisoCamara = concedido
         if (concedido) {
-            val archivo = File(context.cacheDir, "avatar_${System.currentTimeMillis()}.jpg")
-            val uri = FileProvider.getUriForFile(context, "cl.oylfrutossecos.app.fileprovider", archivo)
-            uriFotoTemporal = uri
-            lanzadorCamara.launch(uri)
+            tomarFotoPerfil()
         } else {
             Toast.makeText(context, "Permiso de cámara necesario para capturar foto", Toast.LENGTH_SHORT).show()
         }
@@ -133,21 +154,20 @@ fun PerfilScreen(
                         .background(VerdeOlivaClaro),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = if (usuario.rol == Rol.ADMINISTRADOR) Icons.Default.AdminPanelSettings else Icons.Default.Person,
-                        contentDescription = "Avatar",
-                        tint = VerdeOlivaPrincipal,
-                        modifier = Modifier.size(54.dp)
+                    ImagenProducto(
+                        imagenUri = usuario.avatarUri,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                        iconoPorDefecto = if (usuario.rol == Rol.ADMINISTRADOR) Icons.Default.AdminPanelSettings else Icons.Default.Person,
+                        colorIconoPorDefecto = VerdeOlivaPrincipal,
+                        tamanoIconoPorDefecto = 54.dp
                     )
                 }
 
                 FilledIconButton(
                     onClick = {
                         if (permisoCamara) {
-                            val archivo = File(context.cacheDir, "avatar_${System.currentTimeMillis()}.jpg")
-                            val uri = FileProvider.getUriForFile(context, "cl.oylfrutossecos.app.fileprovider", archivo)
-                            uriFotoTemporal = uri
-                            lanzadorCamara.launch(uri)
+                            tomarFotoPerfil()
                         } else {
                             lanzadorPermisoCamara.launch(Manifest.permission.CAMERA)
                         }
