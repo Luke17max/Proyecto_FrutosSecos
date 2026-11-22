@@ -277,10 +277,10 @@ fun DashboardScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    BotonAccionCircular(Icons.Default.Storefront, "Catálogo", alNavegarACatalogo)
+                    BotonAccionCircular(Icons.Default.Storefront, "Tienda", alNavegarACatalogo)
                     BotonAccionCircular(Icons.Default.LocationOn, "Tiendas", alNavegarAMapa)
-                    BotonAccionCircular(Icons.Default.QrCodeScanner, "Escanear", alNavegarAQr)
-                    BotonAccionCircular(Icons.Default.ReceiptLong, "Mis pedidos", alNavegarAPedidos)
+                    BotonAccionCircular(Icons.Default.QrCodeScanner, "Scan", alNavegarAQr)
+                    BotonAccionCircular(Icons.Default.ReceiptLong, "Pedidos", alNavegarAPedidos)
                 }
 
                 // Productos Destacados
