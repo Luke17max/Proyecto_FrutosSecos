@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import cl.oylfrutossecos.app.domain.model.Producto
 import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.ui.components.AlertaStockBajoBadge
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 
@@ -68,16 +70,18 @@ fun DetalleProductoScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(220.dp)
                     .clip(RoundedCornerShape(18.dp))
                     .background(SuperficieVariante),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Eco,
-                    contentDescription = null,
-                    tint = VerdeOlivaPrincipal,
-                    modifier = Modifier.size(90.dp)
+                ImagenProducto(
+                    imagenUri = producto.imagenUri,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    iconoPorDefecto = Icons.Default.Eco,
+                    colorIconoPorDefecto = VerdeOlivaPrincipal,
+                    tamanoIconoPorDefecto = 80.dp
                 )
 
                 // Código QR identificador
