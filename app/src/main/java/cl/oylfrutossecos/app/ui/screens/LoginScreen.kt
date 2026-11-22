@@ -84,22 +84,38 @@ fun LoginScreen(
                 SegmentedButton(
                     selected = estado.rolSeleccionado == Rol.CLIENTE,
                     onClick = { viewModel.cambiarRolLogin(Rol.CLIENTE) },
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
-                ) {
-                    Icon(Icons.Default.Person, contentDescription = null, modifier = Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Cliente")
-                }
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                    icon = {
+                        SegmentedButtonDefaults.Icon(active = estado.rolSeleccionado == Rol.CLIENTE) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = null,
+                                modifier = Modifier.size(SegmentedButtonDefaults.IconSize)
+                            )
+                        }
+                    },
+                    label = {
+                        Text("Cliente")
+                    }
+                )
 
                 SegmentedButton(
                     selected = estado.rolSeleccionado == Rol.ADMINISTRADOR,
                     onClick = { viewModel.cambiarRolLogin(Rol.ADMINISTRADOR) },
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
-                ) {
-                    Icon(Icons.Default.AdminPanelSettings, contentDescription = null, modifier = Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text("Administrador")
-                }
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                    icon = {
+                        SegmentedButtonDefaults.Icon(active = estado.rolSeleccionado == Rol.ADMINISTRADOR) {
+                            Icon(
+                                imageVector = Icons.Default.AdminPanelSettings,
+                                contentDescription = null,
+                                modifier = Modifier.size(SegmentedButtonDefaults.IconSize)
+                            )
+                        }
+                    },
+                    label = {
+                        Text("Administrador")
+                    }
+                )
             }
 
             // Tarjeta informativa con credenciales de prueba preconfiguradas
