@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +29,7 @@ import cl.oylfrutossecos.app.domain.model.PublicacionExterna
 import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.ui.components.AlertaStockBajoBadge
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.PedidosViewModel
@@ -292,10 +294,10 @@ fun DashboardScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    BotonAccionCircular(Icons.Default.Storefront, "Catálogo", alNavegarACatalogo)
+                    BotonAccionCircular(Icons.Default.Storefront, "Tienda", alNavegarACatalogo)
                     BotonAccionCircular(Icons.Default.LocationOn, "Tiendas", alNavegarAMapa)
-                    BotonAccionCircular(Icons.Default.QrCodeScanner, "Escanear", alNavegarAQr)
-                    BotonAccionCircular(Icons.Default.ReceiptLong, "Mis pedidos", alNavegarAPedidos)
+                    BotonAccionCircular(Icons.Default.QrCodeScanner, "Scan", alNavegarAQr)
+                    BotonAccionCircular(Icons.Default.ReceiptLong, "Pedidos", alNavegarAPedidos)
                 }
 
                 // Productos Destacados
@@ -510,11 +512,13 @@ private fun TarjetaProductoHorizontal(
                     .background(SuperficieVariante),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Eco,
-                    contentDescription = null,
-                    tint = VerdeOlivaPrincipal,
-                    modifier = Modifier.size(40.dp)
+                ImagenProducto(
+                    imagenUri = producto.imagenUri,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    iconoPorDefecto = Icons.Default.Eco,
+                    colorIconoPorDefecto = VerdeOlivaPrincipal,
+                    tamanoIconoPorDefecto = 40.dp
                 )
             }
 

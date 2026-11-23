@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import cl.oylfrutossecos.app.domain.model.Pedido
 import cl.oylfrutossecos.app.domain.model.TipoEntrega
 import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.ui.components.BotonConCarga
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.CarritoViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.PedidosViewModel
@@ -288,7 +290,14 @@ private fun TarjetaItemCarrito(
                     .background(SuperficieVariante),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Default.Eco, contentDescription = null, tint = VerdeOlivaPrincipal, modifier = Modifier.size(28.dp))
+                ImagenProducto(
+                    imagenUri = item.producto.imagenUri,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    iconoPorDefecto = Icons.Default.Eco,
+                    colorIconoPorDefecto = VerdeOlivaPrincipal,
+                    tamanoIconoPorDefecto = 28.dp
+                )
             }
 
             Spacer(modifier = Modifier.width(12.dp))
