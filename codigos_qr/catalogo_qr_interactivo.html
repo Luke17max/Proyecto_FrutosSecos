@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OYL Frutos Secos - Catálogo de Códigos QR</title>
+    <style>
+        :root {
+            --verde-principal: #4B5E28;
+            --verde-oscuro: #2D3A18;
+            --verde-claro: #E8EFE0;
+            --dorado: #C89658;
+            --fondo: #F9F9F6;
+            --tarjeta: #FFFFFF;
+            --texto-principal: #1F2418;
+            --texto-secundario: #5E6554;
+            --rojo-alerta: #B3261E;
+            --verde-exito: #2E7D32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--fondo);
+            color: var(--texto-principal);
+            padding: 30px 20px;
+        }
+
+        .header {
+            max-width: 1100px;
+            margin: 0 auto 30px auto;
+            text-align: center;
+            background: linear-gradient(135deg, var(--verde-oscuro), var(--verde-principal));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(45, 58, 24, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .header h2 {
+            font-size: 1.1rem;
+            color: var(--dorado);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+            color: #E2E8D8;
+            line-height: 1.5;
+        }
+
+        .instructions {
+            max-width: 1100px;
+            margin: 0 auto 30px auto;
+            background: white;
+            padding: 18px 24px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-left: 6px solid var(--dorado);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .instructions-text {
+            font-size: 0.95rem;
+            color: var(--texto-principal);
+        }
+
+        .instructions-text strong {
+            color: var(--verde-principal);
+        }
+
+        .btn-print {
+            background-color: var(--verde-principal);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-print:hover {
+            background-color: var(--verde-oscuro);
+        }
+
+        .grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--tarjeta);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            border: 1px solid #ECEEE7;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .badge-categoria {
+            align-self: flex-start;
+            background-color: var(--verde-claro);
+            color: var(--verde-oscuro);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--texto-principal);
+            margin-bottom: 4px;
+        }
+
+        .formato {
+            font-size: 0.85rem;
+            color: var(--texto-secundario);
+            margin-bottom: 15px;
+        }
+
+        .qr-wrapper {
+            background: #FAFAFA;
+            border: 2px solid #E3E8DC;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .qr-wrapper img {
+            width: 190px;
+            height: 190px;
+            display: block;
+        }
+
+        .qr-code-pill {
+            background-color: #2D3A18;
+            color: white;
+            font-family: monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .info-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-top: 1px dashed #E5E7EB;
+            font-size: 0.9rem;
+        }
+
+        .precio {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--verde-principal);
+        }
+
+        .stock {
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .stock-ok {
+            background-color: #E8F5E9;
+            color: var(--verde-exito);
+        }
+
+        .stock-bajo {
+            background-color: #FFEBEE;
+            color: var(--rojo-alerta);
+        }
+
+        .descripcion {
+            font-size: 0.82rem;
+            color: var(--texto-secundario);
+            margin-top: 10px;
+            line-height: 1.4;
+            text-align: justify;
+        }
+
+        /* Modal para ver QR ampliado */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #modal img {
+            width: 380px;
+            height: 380px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        #modal-title {
+            color: white;
+            margin-top: 18px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        #modal-code {
+            color: var(--dorado);
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        #modal-close {
+            margin-top: 20px;
+            background: white;
+            color: #333;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .header, .instructions, #modal-close {
+                display: none;
+            }
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid #CCC;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>OYL FRUTOS SECOS</h1>
+        <h2>Catálogo Oficial de Códigos QR para Pruebas del Escáner</h2>
+        <p>Abre la aplicación <strong>OYL Frutos Secos</strong> en tu celular, pulsa en la sección <strong>Scan / Escanear</strong>, presiona el botón <em>"Escanear Código con la Cámara"</em> y apunta directamente a cualquiera de estos códigos para probar el reconocimiento instantáneo.</p>
+    </div>
+
+    <div class="instructions">
+        <div class="instructions-text">
+            📱 <strong>Instrucciones de prueba:</strong> Puedes escanear directamente desde la pantalla de tu computador o imprimir esta hoja presionando el botón de la derecha. Haz clic en cualquier código para verlo ampliado en pantalla completa.
+        </div>
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir Etiquetas</button>
+    </div>
+
+    <div class="grid">
+
+        <!-- 1. Almendras -->
+        <div class="card">
+            <span class="badge-categoria">Frutos Secos</span>
+            <h3>Almendras Naturales</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('01_Almendras_Naturales_OYL-ALM-001.png', 'Almendras Naturales', 'OYL-ALM-001')">
+                <img src="01_Almendras_Naturales_OYL-ALM-001.png" alt="QR Almendras Naturales">
+            </div>
+            <div class="qr-code-pill">OYL-ALM-001</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$2.990</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-ok">25 unidades</span>
+            </div>
+            <p class="descripcion">Almendras naturales sin sal de primera calidad. Ricas en proteínas, fibra y grasas saludables.</p>
+        </div>
+
+        <!-- 2. Nueces -->
+        <div class="card">
+            <span class="badge-categoria">Frutos Secos</span>
+            <h3>Nueces Mariposa</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('02_Nueces_Mariposa_OYL-NUC-002.png', 'Nueces Mariposa', 'OYL-NUC-002')">
+                <img src="02_Nueces_Mariposa_OYL-NUC-002.png" alt="QR Nueces Mariposa">
+            </div>
+            <div class="qr-code-pill">OYL-NUC-002</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$3.490</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-ok">18 unidades</span>
+            </div>
+            <p class="descripcion">Nueces mariposa seleccionadas, crocantes y ricas en ácidos grasos Omega-3.</p>
+        </div>
+
+        <!-- 3. Mix Premium -->
+        <div class="card">
+            <span class="badge-categoria">Frutos Secos</span>
+            <h3>Mix Premium</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('03_Mix_Premium_OYL-MIX-003.png', 'Mix Premium', 'OYL-MIX-003')">
+                <img src="03_Mix_Premium_OYL-MIX-003.png" alt="QR Mix Premium">
+            </div>
+            <div class="qr-code-pill">OYL-MIX-003</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$3.990</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-ok">40 unidades</span>
+            </div>
+            <p class="descripcion">Combinación equilibrada de almendras, nueces, castañas de cajú y pasas seleccionadas.</p>
+        </div>
+
+        <!-- 4. Chía -->
+        <div class="card">
+            <span class="badge-categoria">Semillas</span>
+            <h3>Semillas de Chía</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('04_Semillas_Chia_OYL-CHI-004.png', 'Semillas de Chía', 'OYL-CHI-004')">
+                <img src="04_Semillas_Chia_OYL-CHI-004.png" alt="QR Semillas de Chía">
+            </div>
+            <div class="qr-code-pill">OYL-CHI-004</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$2.290</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-ok">20 unidades</span>
+            </div>
+            <p class="descripcion">Semillas de chía 100% naturales, excelente fuente de fibra soluble y antioxidantes.</p>
+        </div>
+
+        <!-- 5. Cranberries -->
+        <div class="card">
+            <span class="badge-categoria">Deshidratados</span>
+            <h3>Cranberries</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('05_Cranberries_OYL-CRA-005.png', 'Cranberries', 'OYL-CRA-005')">
+                <img src="05_Cranberries_OYL-CRA-005.png" alt="QR Cranberries">
+            </div>
+            <div class="qr-code-pill">OYL-CRA-005</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$2.890</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-ok">15 unidades</span>
+            </div>
+            <p class="descripcion">Arándanos rojos deshidratados con un toque dulce, ideales para desayunos y repostería.</p>
+        </div>
+
+        <!-- 6. Pasas Corinto -->
+        <div class="card">
+            <span class="badge-categoria">Deshidratados</span>
+            <h3>Pasas Corinto</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('06_Pasas_Corinto_OYL-PAS-006.png', 'Pasas Corinto', 'OYL-PAS-006')">
+                <img src="06_Pasas_Corinto_OYL-PAS-006.png" alt="QR Pasas Corinto">
+            </div>
+            <div class="qr-code-pill">OYL-PAS-006</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$1.890</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-ok">30 unidades</span>
+            </div>
+            <p class="descripcion">Pasas morenas seleccionadas de dulzor natural, ricas en hierro y energía rápida.</p>
+        </div>
+
+        <!-- 7. Semillas de Calabaza -->
+        <div class="card">
+            <span class="badge-categoria">Semillas</span>
+            <h3>Semillas de Calabaza</h3>
+            <div class="formato">Formato: 250 gr</div>
+            <div class="qr-wrapper" onclick="abrirModal('07_Semillas_Calabaza_OYL-CAL-007.png', 'Semillas de Calabaza', 'OYL-CAL-007')">
+                <img src="07_Semillas_Calabaza_OYL-CAL-007.png" alt="QR Semillas de Calabaza">
+            </div>
+            <div class="qr-code-pill">OYL-CAL-007</div>
+            <div class="info-row">
+                <span>Precio:</span>
+                <span class="precio">$2.690</span>
+            </div>
+            <div class="info-row">
+                <span>Stock registrado:</span>
+                <span class="stock stock-bajo">⚠️ 5 unidades (Stock Crítico)</span>
+            </div>
+            <p class="descripcion">Semillas de zapallo o calabaza peladas, ricas en magnesio y zinc.</p>
+        </div>
+
+    </div>
+
+    <!-- Modal para Zoom -->
+    <div id="modal" onclick="cerrarModal()">
+        <img id="modal-img" src="" alt="QR Ampliado">
+        <div id="modal-title"></div>
+        <div id="modal-code"></div>
+        <button id="modal-close" onclick="cerrarModal()">Cerrar</button>
+    </div>
+
+    <script>
+        function abrirModal(imgSrc, title, code) {
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-code').textContent = code;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') cerrarModal();
+        });
+    </script>
+</body>
+</html>
