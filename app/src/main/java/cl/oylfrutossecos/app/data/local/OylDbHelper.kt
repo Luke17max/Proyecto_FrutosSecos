@@ -16,7 +16,7 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         const val NOMBRE_BASE_DATOS = "oyl_frutos_secos.db"
-        const val VERSION_BASE_DATOS = 1
+        const val VERSION_BASE_DATOS = 2
 
         // Singleton para evitar múltiples instancias concurrentes
         @Volatile
@@ -188,7 +188,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 2990,
                 stock = 25,
                 formato = "250 gr",
-                descripcion = "Almendras naturales sin sal de primera calidad. Ricas en proteínas, fibra y grasas saludables."
+                descripcion = "Almendras naturales sin sal de primera calidad. Ricas en proteínas, fibra y grasas saludables.",
+                imagenUri = "prod_almendras_naturales"
             ),
             Producto(
                 codigoQr = "OYL-NUC-002",
@@ -197,7 +198,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 3490,
                 stock = 18,
                 formato = "250 gr",
-                descripcion = "Nueces mariposa seleccionadas, crocantes y ricas en ácidos grasos Omega-3."
+                descripcion = "Nueces mariposa seleccionadas, crocantes y ricas en ácidos grasos Omega-3.",
+                imagenUri = "prod_nueces_mariposa"
             ),
             Producto(
                 codigoQr = "OYL-MIX-003",
@@ -206,7 +208,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 3990,
                 stock = 40,
                 formato = "250 gr",
-                descripcion = "Combinación equilibrada de almendras, nueces, castañas de cajú y pasas seleccionadas."
+                descripcion = "Combinación equilibrada de almendras, nueces, castañas de cajú y pasas seleccionadas.",
+                imagenUri = "prod_mix_premium"
             ),
             Producto(
                 codigoQr = "OYL-CHI-004",
@@ -215,7 +218,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 2290,
                 stock = 20,
                 formato = "250 gr",
-                descripcion = "Semillas de chía 100% naturales, excelente fuente de fibra soluble y antioxidantes."
+                descripcion = "Semillas de chía 100% naturales, excelente fuente de fibra soluble y antioxidantes.",
+                imagenUri = "prod_semillas_chia"
             ),
             Producto(
                 codigoQr = "OYL-CRA-005",
@@ -224,7 +228,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 2890,
                 stock = 15,
                 formato = "250 gr",
-                descripcion = "Arándanos rojos deshidratados con un toque dulce, ideales para desayunos y repostería."
+                descripcion = "Arándanos rojos deshidratados con un toque dulce, ideales para desayunos y repostería.",
+                imagenUri = "prod_cranberries"
             ),
             Producto(
                 codigoQr = "OYL-PAS-006",
@@ -233,7 +238,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 1890,
                 stock = 30,
                 formato = "250 gr",
-                descripcion = "Pasas morenas seleccionadas de dulzor natural, ricas en hierro y energía rápida."
+                descripcion = "Pasas morenas seleccionadas de dulzor natural, ricas en hierro y energía rápida.",
+                imagenUri = "prod_pasas_corinto"
             ),
             Producto(
                 codigoQr = "OYL-CAL-007",
@@ -242,7 +248,8 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 precio = 2690,
                 stock = 5, // Simulación de stock bajo para alertas de inventario
                 formato = "250 gr",
-                descripcion = "Semillas de zapallo o calabaza peladas, ricas en magnesio y zinc."
+                descripcion = "Semillas de zapallo o calabaza peladas, ricas en magnesio y zinc.",
+                imagenUri = "prod_semillas_calabaza"
             )
         )
 
@@ -255,6 +262,7 @@ class OylDbHelper(context: Context) : SQLiteOpenHelper(
                 put("stock", p.stock)
                 put("formato", p.formato)
                 put("descripcion", p.descripcion)
+                put("imagen_uri", p.imagenUri)
                 put("activo", 1)
             }
             db.insert("productos", null, cv)

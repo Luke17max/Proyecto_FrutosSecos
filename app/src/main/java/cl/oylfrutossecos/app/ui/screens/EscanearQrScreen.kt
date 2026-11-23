@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import cl.oylfrutossecos.app.domain.model.Producto
 import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.ui.components.AlertaStockBajoBadge
+import cl.oylfrutossecos.app.ui.components.ImagenProducto
 import cl.oylfrutossecos.app.ui.theme.*
 import cl.oylfrutossecos.app.ui.viewmodels.InventarioViewModel
 import cl.oylfrutossecos.app.ui.viewmodels.ProductosViewModel
@@ -300,14 +302,31 @@ fun EscanearQrScreen(
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Column {
+                            Box(
+                                modifier = Modifier
+                                    .size(68.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(SuperficieVariante),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                ImagenProducto(
+                                    imagenUri = prod.imagenUri,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop,
+                                    iconoPorDefecto = Icons.Default.Eco,
+                                    colorIconoPorDefecto = VerdeOlivaPrincipal,
+                                    tamanoIconoPorDefecto = 32.dp
+                                )
+                            }
+
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(text = prod.nombre, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                                 Text(text = "Código: ${prod.codigoQr} · Formato: ${prod.formato}", style = MaterialTheme.typography.bodySmall, color = TextoSecundario)
+                                Text(text = "$${prod.precio}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, color = VerdeOlivaPrincipal)
                             }
-                            Text(text = "$${prod.precio}", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, color = VerdeOlivaPrincipal)
                         }
 
                         Row(

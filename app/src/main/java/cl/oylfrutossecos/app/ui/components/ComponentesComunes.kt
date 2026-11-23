@@ -252,11 +252,19 @@ fun ImagenProducto(
         if (!imagenUri.isNullOrBlank()) {
             withContext(Dispatchers.IO) {
                 try {
+                    // 1. Intentar resolver como recurso drawable empaquetado (ej: "prod_almendras_naturales")
+                    val resId = context.resources.getIdentifier(imagenUri, "drawable", context.packageName)
+                    if (resId != 0) {
+                        bitmapState = BitmapFactory.decodeResource(context.resources, resId)
+                        return@withContext
+                    }
+
+                    // 2. Si no es un drawable por nombre, resolver como URI (content, file, android.resource o ruta de archivo)
                     val uri = Uri.parse(imagenUri)
                     var inputStream: InputStream? = null
                     var rutaArchivo: String? = null
 
-                    if (uri.scheme == "content") {
+                    if (uri.scheme == "content" || uri.scheme == "android.resource") {
                         inputStream = context.contentResolver.openInputStream(uri)
                     } else {
                         val path = uri.path ?: imagenUri
