@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cl.oylfrutossecos.app.domain.model.Producto
+import cl.oylfrutossecos.app.domain.model.PublicacionExterna
 import cl.oylfrutossecos.app.domain.model.Rol
 import cl.oylfrutossecos.app.domain.model.Usuario
 import cl.oylfrutossecos.app.ui.components.AlertaStockBajoBadge
@@ -55,6 +56,20 @@ fun DashboardScreen(
     }
     val pedidosPendientes = remember(pedidosState.pedidos) {
         pedidosState.pedidos.filter { it.estado == cl.oylfrutossecos.app.domain.model.EstadoPedido.PENDIENTE_VALIDACION }
+    }
+
+    var noticiasExternas by remember { mutableStateOf<List<PublicacionExterna>>(emptyList()) }
+    var cargandoNoticias by remember { mutableStateOf(false) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+
+    LaunchedEffect(Unit) {
+        cargandoNoticias = true
+        val repo = cl.oylfrutossecos.app.data.repository.OylRepository.obtenerInstancia(context)
+        val res = repo.obtenerPublicacionesExternas(4)
+        if (res.isSuccess) {
+            noticiasExternas = res.getOrDefault(emptyList())
+        }
+        cargandoNoticias = false
     }
 
     LaunchedEffect(usuario.id) {
@@ -310,6 +325,74 @@ fun DashboardScreen(
                                 carritoViewModel.agregarAlCarrito(producto.id, 1) { _, _ -> }
                             }
                         )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // SECCION: COMUNICADOS Y CONSEJOS (CONSUMO API REST EXTERNA)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.Public,
+                            contentDescription = null,
+                            tint = VerdeOlivaPrincipal,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "Novedades y Consejos Nutricionales",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+                Text(
+                    text = "Información en línea provista vía API REST externa",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                if (cargandoNoticias) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(28.dp), color = VerdeOlivaPrincipal)
+                    }
+                } else if (noticiasExternas.isNotEmpty()) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        noticiasExternas.forEach { post ->
+                            Card(
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = SuperficieTarjeta),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(modifier = Modifier.padding(12.dp)) {
+                                    Text(
+                                        text = post.titulo,
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = VerdeOlivaOscuro,
+                                        maxLines = 1
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = post.contenido,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        maxLines = 2
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }

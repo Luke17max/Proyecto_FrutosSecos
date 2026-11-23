@@ -136,3 +136,12 @@ data class CampoFormulario(
 ) {
     val esValido: Boolean get() = error == null
 }
+
+/**
+ * Publicacion o noticia obtenida desde la API REST externa.
+ */
+data class PublicacionExterna(
+    val id: Int,
+    val titulo: String,
+    val contenido: String
+)

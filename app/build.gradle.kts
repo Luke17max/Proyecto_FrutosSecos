@@ -18,9 +18,19 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("${rootDir}/oyl_keystore.jks")
+            storePassword = "oyl2026"
+            keyAlias = "oylfrutossecos"
+            keyPassword = "oyl2026"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -60,6 +70,16 @@ dependencies {
 
     // Mapas OpenStreetMap
     implementation(libs.osmdroid.android)
+
+    // Red y Consumo de API REST (Retrofit, Gson, OkHttp)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging)
+
+    // Pruebas Unitarias (JUnit, MockK, Coroutines-Test)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

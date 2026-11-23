@@ -57,6 +57,8 @@ class ProductosViewModel(private val repository: OylRepository) : ViewModel() {
 
     fun cargarProductos() {
         viewModelScope.launch {
+            // Sincronizar primero con el microservicio Spring Boot si esta disponible
+            repository.sincronizarProductosDesdeBackend()
             val lista = repository.obtenerProductos(
                 categoria = _categoriaSeleccionada.value,
                 busqueda = _busqueda.value

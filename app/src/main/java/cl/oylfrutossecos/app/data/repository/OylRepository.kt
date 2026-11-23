@@ -4,7 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import cl.oylfrutossecos.app.data.local.OylDbHelper
+import cl.oylfrutossecos.app.data.remote.RetrofitClient
+import cl.oylfrutossecos.app.data.remote.model.AjusteStockDto
+import cl.oylfrutossecos.app.data.remote.model.DetallePedidoDto
+import cl.oylfrutossecos.app.data.remote.model.EstadoPedidoDto
+import cl.oylfrutossecos.app.data.remote.model.PedidoDto
+import cl.oylfrutossecos.app.data.remote.model.ProductoDto
+import cl.oylfrutossecos.app.data.remote.model.UsuarioDto
 import cl.oylfrutossecos.app.domain.model.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -599,6 +608,154 @@ class OylRepository private constructor(context: Context) {
                 esTiendaPrincipal = false
             )
         )
+    }
+
+    // ========================================================================
+    // METODOS SINCRONIZADOS CON MICROSERVICIOS SPRING BOOT (FASE 2)
+    // ========================================================================
+
+    suspend fun sincronizarProductosDesdeBackend(): Result<List<Producto>> = withContext(Dispatchers.IO) {
+        try {
+            val response = RetrofitClient.catalogoApi.listarProductos()
+            if (response.isSuccessful && response.body() != null) {
+                val dtos = response.body()!!
+                val productos = dtos.map { dto ->
+                    Producto(
+                        id = dto.id,
+                        codigoQr = dto.codigoQr,
+                        nombre = dto.nombre,
+                        categoria = runCatching { Categoria.valueOf(dto.categoria) }.getOrDefault(Categoria.TODOS),
+                        precio = dto.precio,
+                        stock = dto.stock,
+                        formato = dto.formato,
+                        descripcion = dto.descripcion,
+                        imagenUri = dto.imagenUri,
+                        activo = dto.activo
+                    )
+                }
+                // Actualizar cache local
+                productos.forEach { guardarOActualizarProducto(it) }
+                Result.success(productos)
+            } else {
+                Result.failure(Exception("Error al consultar backend: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            // Si el backend no esta encendido, retornar cache local SQLite
+            Result.success(obtenerProductos())
+        }
+    }
+
+    suspend fun enviarAjusteStockBackend(id: Long, delta: Int): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val resp = RetrofitClient.catalogoApi.ajustarStock(id, AjusteStockDto(delta))
+            resp.isSuccessful
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    suspend fun sincronizarPedidosDesdeBackend(clienteId: Long?): Result<List<Pedido>> = withContext(Dispatchers.IO) {
+        try {
+            val response = RetrofitClient.pedidosApi.listarPedidos(clienteId = clienteId)
+            if (response.isSuccessful && response.body() != null) {
+                val lista = response.body()!!.map { dto ->
+                    Pedido(
+                        id = dto.id ?: 0L,
+                        numeroPedido = dto.numeroPedido ?: ("#PED-" + (dto.id ?: 0)),
+                        usuarioId = dto.clienteId,
+                        clienteNombre = dto.clienteNombre,
+                        items = dto.items.map { itDto ->
+                            ItemCarrito(
+                                id = itDto.id ?: 0L,
+                                usuarioId = dto.clienteId,
+                                producto = Producto(
+                                    id = itDto.productoId,
+                                    codigoQr = "PRD-" + itDto.productoId,
+                                    nombre = itDto.nombreProducto,
+                                    categoria = Categoria.TODOS,
+                                    precio = itDto.precioUnitario,
+                                    stock = 99,
+                                    formato = "Unidad",
+                                    descripcion = ""
+                                ),
+                                cantidad = itDto.cantidad
+                            )
+                        },
+                        total = dto.total,
+                        costoDespacho = dto.costoEnvio,
+                        tipoEntrega = runCatching { TipoEntrega.valueOf(dto.tipoEntrega) }.getOrDefault(TipoEntrega.RETIRO_TIENDA),
+                        direccionEntrega = dto.direccionEntrega,
+                        estado = runCatching { EstadoPedido.valueOf(dto.estado) }.getOrDefault(EstadoPedido.PENDIENTE_VALIDACION),
+                        fecha = dto.fechaHora ?: ""
+                    )
+                }
+                Result.success(lista)
+            } else {
+                Result.failure(Exception("Error al consultar pedidos: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.success(if (clienteId != null) obtenerPedidosUsuario(clienteId) else obtenerTodosLosPedidos())
+        }
+    }
+
+    suspend fun enviarPedidoABackend(pedido: Pedido): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val dto = PedidoDto(
+                numeroPedido = pedido.numeroPedido,
+                clienteId = pedido.usuarioId,
+                clienteNombre = pedido.clienteNombre,
+                fechaHora = pedido.fecha,
+                tipoEntrega = pedido.tipoEntrega.name,
+                direccionEntrega = pedido.direccionEntrega,
+                subtotal = pedido.total - pedido.costoDespacho,
+                costoEnvio = pedido.costoDespacho,
+                total = pedido.total,
+                estado = pedido.estado.name,
+                items = pedido.items.map { item ->
+                    DetallePedidoDto(
+                        productoId = item.producto.id,
+                        nombreProducto = item.producto.nombre,
+                        precioUnitario = item.producto.precio,
+                        cantidad = item.cantidad,
+                        subtotal = item.subtotal
+                    )
+                }
+            )
+            val resp = RetrofitClient.pedidosApi.crearPedido(dto)
+            resp.isSuccessful
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    suspend fun actualizarEstadoPedidoBackend(id: Long, nuevoEstado: EstadoPedido): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val resp = RetrofitClient.pedidosApi.actualizarEstado(id, EstadoPedidoDto(nuevoEstado.name))
+            resp.isSuccessful
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    // API EXTERNA
+    suspend fun obtenerPublicacionesExternas(limite: Int = 4): Result<List<PublicacionExterna>> = withContext(Dispatchers.IO) {
+        try {
+            val response = RetrofitClient.apiExterna.obtenerPublicaciones(limite)
+            if (response.isSuccessful && response.body() != null) {
+                val publicaciones = response.body()!!.map {
+                    PublicacionExterna(
+                        id = it.id,
+                        titulo = it.title.replaceFirstChar { c -> c.uppercase() },
+                        contenido = it.body
+                    )
+                }
+                Result.success(publicaciones)
+            } else {
+                Result.failure(Exception("Error al consultar API externa: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     // MAPPERS PRIVADOS DE CURSOR
