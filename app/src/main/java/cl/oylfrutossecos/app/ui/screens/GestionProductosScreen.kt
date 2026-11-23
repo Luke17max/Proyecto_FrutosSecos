@@ -251,6 +251,26 @@ fun GestionProductosScreen(
                 }
 
                 // Campos del Formulario
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(Icons.Default.QrCode, contentDescription = null, tint = VerdeOlivaPrincipal, modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Código QR asociado: ${estadoForm.codigoQr.valor.ifBlank { "Auto-generado" }}",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
                 CampoTextoFormulario(
                     etiqueta = "Nombre Comercial",
                     campo = estadoForm.nombre,
@@ -366,7 +386,7 @@ fun GestionProductosScreen(
                             Spacer(modifier = Modifier.width(12.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(prod.nombre, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                                Text("${prod.categoria.titulo} · $${prod.precio} · ${prod.formato}", style = MaterialTheme.typography.bodySmall, color = TextoSecundario)
+                                Text("QR: ${prod.codigoQr} · ${prod.categoria.titulo} · $${prod.precio} · ${prod.formato}", style = MaterialTheme.typography.bodySmall, color = TextoSecundario)
                                 Text(
                                     text = "Stock actual: ${prod.stock} unidades",
                                     fontWeight = FontWeight.Bold,

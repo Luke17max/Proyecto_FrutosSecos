@@ -185,7 +185,11 @@ class OylRepository private constructor(context: Context) {
 
     fun obtenerProductoPorQr(codigoQr: String): Producto? {
         val db = dbHelper.readableDatabase
-        val cursor = db.query("productos", null, "codigo_qr = ?", arrayOf(codigoQr.trim()), null, null, null)
+        val codigoLimpio = codigoQr.trim()
+        val cursor = db.rawQuery(
+            "SELECT * FROM productos WHERE UPPER(TRIM(codigo_qr)) = UPPER(?) LIMIT 1",
+            arrayOf(codigoLimpio)
+        )
         return cursor.use {
             if (it.moveToFirst()) cursorAProducto(it) else null
         }

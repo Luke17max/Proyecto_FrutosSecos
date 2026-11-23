@@ -6,6 +6,7 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -52,10 +53,13 @@ fun EscanearQrScreen(
     var animacionExito by remember { mutableStateOf(false) }
 
     fun procesarLectura(codigo: String) {
-        codigoDetectado = codigo
+        val codigoLimpio = codigo.trim().let {
+            if (it.contains("/")) it.substringAfterLast("/").trim() else it
+        }
+        codigoDetectado = codigoLimpio
         mensajeError = null
         productosViewModel.seleccionarProductoPorQr(
-            codigoQr = codigo,
+            codigoQr = codigoLimpio,
             alEncontrar = { prod ->
                 productoEncontrado = prod
                 animacionExito = true
@@ -69,31 +73,46 @@ fun EscanearQrScreen(
     }
 
     fun abrirEscanerNativo() {
+        if (escaneando) return
         escaneando = true
         mensajeError = null
 
-        val opciones = GmsBarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
+        try {
+            val opciones = GmsBarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .enableAutoZoom()
+                .build()
 
-        val cliente = GmsBarcodeScanning.getClient(context, opciones)
-        cliente.startScan()
-            .addOnSuccessListener { barcode ->
-                escaneando = false
-                val raw = barcode.rawValue ?: ""
-                if (raw.isNotBlank()) {
-                    procesarLectura(raw)
-                } else {
-                    mensajeError = "El código QR leído está vacío"
+            val cliente = GmsBarcodeScanning.getClient(context, opciones)
+            cliente.startScan()
+                .addOnSuccessListener { barcode ->
+                    escaneando = false
+                    val raw = barcode.rawValue ?: barcode.displayValue ?: ""
+                    if (raw.isNotBlank()) {
+                        procesarLectura(raw)
+                    } else {
+                        mensajeError = "El código QR leído está vacío o no contiene texto legible"
+                    }
                 }
-            }
-            .addOnCanceledListener {
-                escaneando = false
-            }
-            .addOnFailureListener { e ->
-                escaneando = false
-                mensajeError = "No se pudo iniciar el escáner: ${e.message}"
-            }
+                .addOnCanceledListener {
+                    escaneando = false
+                }
+                .addOnFailureListener { e ->
+                    escaneando = false
+                    val detalle = e.localizedMessage ?: e.message ?: ""
+                    mensajeError = when {
+                        detalle.contains("16") || detalle.contains("already in progress", ignoreCase = true) ->
+                            "Ya existe una sesión de escaneo activa. Espera un momento e intenta nuevamente."
+                        detalle.contains("14") || detalle.contains("waiting", ignoreCase = true) ->
+                            "Google Play Services está preparando el módulo del escáner en segundo plano. Comprueba tu conexión a internet o utiliza la simulación rápida."
+                        else ->
+                            "No se pudo iniciar el escáner con la cámara ($detalle). Si estás usando un emulador sin Google Play, utiliza los botones de simulación rápida de abajo."
+                    }
+                }
+        } catch (e: Exception) {
+            escaneando = false
+            mensajeError = "Error al iniciar la cámara del escáner: ${e.message}"
+        }
     }
 
     Scaffold(
@@ -137,7 +156,8 @@ fun EscanearQrScreen(
                     .size(240.dp)
                     .clip(RoundedCornerShape(24.dp))
                     .background(SuperficieVariante)
-                    .border(3.dp, VerdeOlivaPrincipal, RoundedCornerShape(24.dp)),
+                    .border(3.dp, VerdeOlivaPrincipal, RoundedCornerShape(24.dp))
+                    .clickable(enabled = !escaneando) { abrirEscanerNativo() },
                 contentAlignment = Alignment.Center
             ) {
                 if (animacionExito) {
@@ -157,29 +177,52 @@ fun EscanearQrScreen(
                             }
                             Spacer(modifier = Modifier.height(10.dp))
                             Text("¡Código Reconocido!", fontWeight = FontWeight.Bold, color = VerdeExito)
+                            codigoDetectado?.let {
+                                Text(it, fontSize = 12.sp, color = TextoSecundario)
+                            }
                         }
                     }
                 } else {
-                    Icon(
-                        imageVector = Icons.Default.QrCodeScanner,
-                        contentDescription = "Escáner",
-                        tint = VerdeOlivaPrincipal,
-                        modifier = Modifier.size(110.dp)
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Default.QrCodeScanner,
+                            contentDescription = "Escáner",
+                            tint = VerdeOlivaPrincipal,
+                            modifier = Modifier.size(90.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = if (escaneando) "Iniciando cámara..." else "Toca para activar escáner",
+                            fontSize = 12.sp,
+                            color = TextoSecundario,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
                 }
             }
 
             // Botón Principal: Abrir Escáner Nativo con Cámara
             Button(
                 onClick = { abrirEscanerNativo() },
+                enabled = !escaneando,
                 shape = RoundedCornerShape(14.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp)
             ) {
-                Icon(Icons.Default.PhotoCamera, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Escanear Código con la Cámara", fontWeight = FontWeight.Bold)
+                if (escaneando) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(22.dp),
+                        strokeWidth = 2.dp
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Iniciando Cámara...", fontWeight = FontWeight.Bold)
+                } else {
+                    Icon(Icons.Default.PhotoCamera, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Escanear Código con la Cámara", fontWeight = FontWeight.Bold)
+                }
             }
 
             // Simulador de Códigos QR para Pruebas en Emulador
@@ -314,6 +357,21 @@ fun EscanearQrScreen(
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text("Ver Ficha y Agregar al Carrito")
                             }
+                        }
+
+                        OutlinedButton(
+                            onClick = {
+                                productoEncontrado = null
+                                codigoDetectado = null
+                                animacionExito = false
+                                abrirEscanerNativo()
+                            },
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Icon(Icons.Default.QrCodeScanner, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Escanear Otro Producto")
                         }
                     }
                 }
